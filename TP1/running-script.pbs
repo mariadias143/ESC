@@ -1,0 +1,26 @@
+#PBS -N SER
+#PBS -q mei
+#PBS -l nodes=1:ppn=48:r662,walltime=2:00:00
+
+cd /home/a81611/ESC/TP1/NPB3.3.1/NPB3.3-SER/bin
+module load gcc/4.9.0
+./cg.W.x > intel.cg.W.O.baseline
+./ep.W.x > intel.ep.W.O.baseline
+./ft.W.x > intel.ft.W.O.baseline
+./is.W.x > intel.is.W.O.baseline
+./mg.W.x > intel.mg.W.O.baseline
+./ua.W.x > intel.ua.W.O.baseline
+
+./cg.S.x > intel.cg.S.O.baseline
+./ep.S.x > intel.ep.S.O.baseline
+./ft.S.x > intel.ft.S.O.baseline
+./is.S.x > intel.is.S.O.baseline
+./mg.S.x > intel.mg.S.O.baseline
+./ua.S.x > intel.ua.S.O.baseline
+
+./cg.C.x > intel.cg.C.O.baseline
+./ep.C.x > intel.ep.C.O.baseline
+./ft.C.x > intel.ft.C.O.baseline
+./is.C.x > intel.is.C.O.baseline
+./mg.C.x > intel.mg.C.O.baseline
+./ua.C.x > intel.ua.C.O.baseline
