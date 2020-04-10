@@ -29,7 +29,7 @@
 #---------------------------------------------------------------------------
 # This is the fortran compiler used for fortran programs
 #---------------------------------------------------------------------------
-F77 = mpif77
+F77 = ifort
 # This links fortran programs; usually the same as ${F77}
 FLINK	= $(F77)
 
@@ -46,13 +46,13 @@ F_INC =
 #---------------------------------------------------------------------------
 # Global *compile time* flags for Fortran programs
 #---------------------------------------------------------------------------
-FFLAGS	= -O2 -fopenmp
+FFLAGS	= -O3
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable
 # size usually go here.
 #---------------------------------------------------------------------------
-FLINKFLAGS = -O2 -fopenmp
+FLINKFLAGS = -O3
 
 
 #---------------------------------------------------------------------------
@@ -75,7 +75,7 @@ FLINKFLAGS = -O2 -fopenmp
 #---------------------------------------------------------------------------
 # This is the C compiler used for C programs
 #---------------------------------------------------------------------------
-CC = mpicc
+CC = icc
 # This links C programs; usually the same as ${CC}
 CLINK	= $(CC)
 
@@ -126,3 +126,23 @@ BINDIR	= ../bin
 RAND   = randi8
 # The following is highly reliable but may be slow:
 # RAND   = randdp
+
+
+#---------------------------------------------------------------------------
+# The variable WTIME is the name of the wtime source code module in the
+# NPB3.x/common directory.
+# For most machines,       use wtime.c
+# For SGI power challenge: use wtime_sgi64.c
+# Note: WTIME is only used in the serial version.
+#---------------------------------------------------------------------------
+WTIME  = wtime.c
+
+
+#---------------------------------------------------------------------------
+# Enable if either Cray or IBM:
+# (no such flag for most machines: see common/wtime.h)
+# This is used by the C compiler to pass the machine name to common/wtime.h,
+# where the C/Fortran binding interface format is determined
+#---------------------------------------------------------------------------
+# MACHINE	=	-DCRAY
+# MACHINE	=	-DIBM

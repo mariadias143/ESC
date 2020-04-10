@@ -1,0 +1,43 @@
+#PBS -N OPM
+#PBS -q mei
+#PBS -l nodes=1:ppn=48:r662,walltime=2:00:00
+
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-OMP/
+module load gcc/5.3.0
+module load gcc/7.2.0
+module load intel/2019
+
+if [ ! -d results ];then
+  mkdir results;
+fi
+
+if [ ! -d bin ]; then
+  mkdir bin
+fi
+
+make clean
+rm -f config/make.def
+
+if [ "$#" -eq 2 && "$1" = "intel"];
+then
+  cp config/make.icc.def config/make.def
+  make suite
+  echo "intel"
+else
+  cp config/make.cc.def config/make.def
+  make suite
+fi
+
+#for size in {"S"}
+for size in {"W","C"}
+do
+  for kernel in {"bt-mz","lu-mz","sp-mz"}
+  do
+    for th in {8,16,32}
+    do
+      export OMP_NUM_THREADS=${th}
+      ./bin/${kernel}.${size}.x > results/${kernel}.${size}.${th}.res
+    done
+  done
+done
