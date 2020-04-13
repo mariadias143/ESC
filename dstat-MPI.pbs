@@ -1,0 +1,52 @@
+#PBS -N DSTAT-MPI
+#PBS -q mei
+#PBS -l nodes=2:ppn=48:r662,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+source /share/apps/intel/parallel_studio_xe_2019/compilers_and_libraries_2019/linux/bin/compilervars.sh intel64
+module load intel/openmpi_mx/1.8.4
+
+#####HYBRID#######
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-MPI/
+make clean
+make suite
+
+export OMP_NUM_THREADS=12
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/lu-mz_A_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/lu-mz.A.4 > /home/a82523/ESC/TP1/Results/MPI/Results/lu-mz_A_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/lu-mz_B_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/lu-mz.B.4 > /home/a82523/ESC/TP1/Results/MPI/Results/lu-mz_B_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/lu-mz_C_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/lu-mz.C.4 > /home/a82523/ESC/TP1/Results/MPI/Results/lu-mz_C_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/sp-mz_A_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/sp-mz.A.4 > /home/a82523/ESC/TP1/Results/MPI/Results/sp-mz_A_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/sp-mz_B_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/sp-mz.B.4 > /home/a82523/ESC/TP1/Results/MPI/Results/sp-mz_B_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/sp-mz_C_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/sp-mz.C.4 > /home/a82523/ESC/TP1/Results/MPI/Results/sp-mz_C_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/bt-mz_A_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/bt-mz.A.4 > /home/a82523/ESC/TP1/Results/MPI/Results/bt-mz_A_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/bt-mz_B_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/bt-mz.B.4 > /home/a82523/ESC/TP1/Results/MPI/Results/bt-mz_B_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/MPI/DStat/bt-mz_C_intel.csv > /dev/null & mpirun -np 4 --map-by ppr:1:socket:PE=12 -mca btl self,sm,tcp bin/bt-mz.C.4 > /home/a82523/ESC/TP1/Results/MPI/Results/bt-mz_C_intel.txt
+sleep 2
+kill $!

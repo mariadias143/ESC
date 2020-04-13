@@ -1,0 +1,60 @@
+#PBS -N DSTAT-OPM
+#PBS -q mei
+#PBS -l nodes=1:ppn=48:r662,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+source /share/apps/intel/parallel_studio_xe_2019/compilers_and_libraries_2019/linux/bin/compilervars.sh intel64
+
+#####PARALEL#######
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-OMP/
+make clean
+cp config/make.icc.def config/make.def
+make suite
+
+
+######lu-mz######
+export OMP_NUM_THREADS=16
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/lu-mz_A_intel.csv > /dev/null & bin/lu-mz.A.x > /home/a82523/ESC/TP1/Results/OMP/Results/lu-mz_A_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/lu-mz_B_intel.csv > /dev/null & bin/lu-mz.B.x > /home/a82523/ESC/TP1/Results/OMP/Results/lu-mz_B_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/lu-mz_C_intel.csv > /dev/null & bin/lu-mz.C.x > /home/a82523/ESC/TP1/Results/OMP/Results/lu-mz_C_intel.txt
+sleep 2
+kill $!
+
+######sp-mz######
+export OMP_NUM_THREADS=16
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/sp-mz_A_intel.csv > /dev/null & bin/sp-mz.A.x > /home/a82523/ESC/TP1/Results/OMP/Results/sp-mz_A_intel.txt
+sleep 2
+kill $!
+
+export OMP_NUM_THREADS=32
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/sp-mz_B_intel.csv > /dev/null & bin/sp-mz.B.x > /home/a82523/ESC/TP1/Results/OMP/Results/sp-mz_B_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/sp-mz_C_intel.csv > /dev/null & bin/sp-mz.C.x > /home/a82523/ESC/TP1/Results/OMP/Results/sp-mz_C_intel.txt
+sleep 2
+kill $!
+
+######bt-mz######
+export OMP_NUM_THREADS=16
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/bt-mz_A_intel.csv > /dev/null & bin/bt-mz.A.x > /home/a82523/ESC/TP1/Results/OMP/Results/bt-mz_A_intel.txt
+sleep 2
+kill $!
+
+export OMP_NUM_THREADS=32
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/bt-mz_B_intel.csv > /dev/null & bin/bt-mz.B.x > /home/a82523/ESC/TP1/Results/OMP/Results/bt-mz_B_intel.txt
+sleep 2
+kill $!
+
+/home/a82523/dstat-0.7.2/dstat --cpu --mem --io --disk -n --fs --output /home/a82523/ESC/TP1/Results/OMP/DStat/bt-mz_C_intel.csv > /dev/null & bin/bt-mz.C.x > /home/a82523/ESC/TP1/Results/OMP/Results/bt-mz_C_intel.txt
+sleep 2
+kill $!
