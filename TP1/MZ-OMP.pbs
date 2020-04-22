@@ -8,8 +8,12 @@ module load gcc/5.3.0
 module load gcc/7.2.0
 module load intel/2019
 
-if [ ! -d results ];then
-  mkdir results;
+if [ ! -d resultsIntel ];then
+  mkdir resultsIntel;
+fi
+
+if [ ! -d resultsGNU ];then
+  mkdir resultsGNU;
 fi
 
 if [ ! -d bin ]; then
@@ -19,25 +23,46 @@ fi
 make clean
 rm -f config/make.def
 
-if [ "$#" -eq 2 && "$1" = "intel"];
-then
-  cp config/make.icc.def config/make.def
-  make suite
-  echo "intel"
-else
-  cp config/make.cc.def config/make.def
-  make suite
-fi
+#if [ "$INTEL" = "true"];
+#then
+#  cp config/make.icc.def config/make.def
+#  make suite
+#  echo "intel"
+#else
+#  cp config/make.cc.def config/make.def
+#  make suite
+#fi
 
 #for size in {"S"}
+cp config/make.icc.def config/make.def
+make suite
+
 for size in {"W","C"}
 do
-  for kernel in {"bt-mz","lu-mz","sp-mz"}
+  for kernel in "bt-mz"
   do
     for th in {8,16,32}
     do
       export OMP_NUM_THREADS=${th}
-      ./bin/${kernel}.${size}.x > results/${kernel}.${size}.${th}.res
+      ./bin/$kernel.${size}.x > resultsIntel/${kernel}.${size}.${th}.res
+    done
+  done
+done
+
+
+make clean
+rm -f config/make.def
+cp config/make.cc.def config/make.def
+make suite
+
+for size in {"W","C"}
+do
+  for kernel in "bt-mz"
+  do
+    for th in {8,16,32}
+    do
+      export OMP_NUM_THREADS=${th}
+      ./bin/$kernel.${size}.x > resultsGNU/${kernel}.${size}.${th}.res
     done
   done
 done

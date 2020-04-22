@@ -1,0 +1,81 @@
+#PBS -N OPM
+#PBS -q mei
+#PBS -l nodes=1:ppn=48:r662,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-OMP/
+
+if [ ! -d bin ]; then
+  mkdir bin
+fi
+
+make clean
+cp config/make.cc.def config/make.def
+make suite
+
+##OMP GNU
+
+export OMP_NUM_THREADS=32
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/omp_gnu_C.csv > /dev/null & bin/bt-mz.C.x
+sleep 2
+kill $!
+export OMP_NUM_THREADS=16
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/omp_gnu_W.csv > /dev/null & bin/bt-mz.W.x
+sleep 2
+kill $!
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-SER/
+
+if [ ! -d bin ]; then
+  mkdir bin
+fi
+
+make clean
+cp config/make.cc.def config/make.def
+make suite
+
+##SEQ GNU
+
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/seq_gnu_C.csv > /dev/null & bin/bt-mz.C.x
+sleep 2
+kill $!
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/seq_gnu_W.csv > /dev/null & bin/bt-mz.W.x
+sleep 2
+kill $!
+
+
+##PARALEL INTEL
+
+source /share/apps/intel/parallel_studio_xe_2019/compilers_and_libraries_2019/linux/bin/compilervars.sh intel64
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-OMP/
+
+make clean
+cp config/make.icc.def config/make.def
+make suite
+
+export OMP_NUM_THREADS=32
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/omp_intel_C.csv > /dev/null & bin/bt-mz.C.x
+sleep 2
+kill $!
+export OMP_NUM_THREADS=16
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/omp_intel_W.csv > /dev/null & bin/bt-mz.W.x
+sleep 2
+kill $!
+
+##SEQ INTEL
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-SER/
+
+make clean
+cp config/make.icc.def config/make.def
+make suite
+
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/seq_intel_C.csv > /dev/null & bin/bt-mz.C.x
+sleep 2
+kill $!
+/home/a82523/dstat-0.7.2/dstat --vmstat --output /home/a82523/ESC/TP1/dstat_res/seq_intel_W.csv > /dev/null & bin/bt-mz.W.x
+sleep 2
+kill $!

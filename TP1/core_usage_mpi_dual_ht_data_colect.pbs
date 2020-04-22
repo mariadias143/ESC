@@ -1,0 +1,26 @@
+#PBS -N MPSTAT-MPI
+#PBS -q mei
+#PBS -l nodes=2:ppn=48:r662,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+module load intel/2019
+module load intel/openmpi_mx/1.8.4
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-MPI/
+#make clean
+#make suite
+
+#####MPI#######
+
+export OMP_NUM_THREADS=24
+for kernel in {"bt-mz","lu-mz","sp-mz"}
+do
+  for size in {"A","B","C"}
+  do
+    mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp2/$kernel.$size.txt & mpirun -np 4 --bind-to hwthread --map-by ppr:2:node:pe=24 -x OMP_NUM_THREADS --mca mtl mx --mca pml cm bin/$kernel.$size.4
+    sleep 1;
+    kill $!;
+  done
+done

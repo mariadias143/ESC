@@ -1,0 +1,77 @@
+#PBS -N MPSTAT-OPM
+#PBS -q mei
+#PBS -l nodes=1:ppn=32:r641,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+module load intel/2019
+
+#####PARALEL#######
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-OMP/
+#make clean
+#cp config/make.icc.def config/make.def
+#make suite
+
+######lu-mz######
+export OMP_NUM_THREADS=16
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/lu-mz.A.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/lu-mz.A.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/lu-mz.B.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/lu-mz.B.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/lu-mz.C.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/lu-mz.C.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+######sp-mz######
+export OMP_NUM_THREADS=16
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/sp-mz.A.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/sp-mz.A.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+export OMP_NUM_THREADS=32
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/sp-mz.B.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/sp-mz.B.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/sp-mz.C.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/sp-mz.C.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+######bt-mz######
+export OMP_NUM_THREADS=16
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/bt-mz.A.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/bt-mz.A.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+export OMP_NUM_THREADS=32
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/bt-mz.B.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/bt-mz.B.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+
+mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & bin/bt-mz.C.x
+sleep 1
+kill $!
+cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/OMP641/bt-mz.C.csv
+rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt

@@ -41,7 +41,7 @@ for NP in {2,4}
 do
   for size in {"W","C"}
   do
-    for kernel in {"bt-mz","lu-mz","sp-mz"}
+    for kernel in "bt-mz"
     do
       for th in {8,16}
       do
@@ -55,14 +55,14 @@ done
 
 module unload intel/openmpi_mx/1.8.4
 make clean
-module load intel/openmpi_eth/1.8.4
+module load intel/openmpi_eth/1.8.2
 make suite
 
 for NP in {2,4}
 do
   for size in {"W","C"}
   do
-    for kernel in {"bt-mz","lu-mz","sp-mz"}
+    for kernel in "bt-mz"
     do
       for th in {8,16}
       do

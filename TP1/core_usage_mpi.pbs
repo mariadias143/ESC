@@ -1,0 +1,29 @@
+#PBS -N MPSTAT-MPI
+#PBS -q mei
+#PBS -l nodes=2:ppn=32:r641,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+
+module load intel/2019
+module load intel/openmpi_mx/1.8.4
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-MPI/
+make clean
+make suite
+
+#####MPI#######
+
+export OMP_NUM_THREADS=8
+for kernel in {"bt-mz","lu-mz","sp-mz"}
+do
+  for size in {"A","B","C"}
+  do
+    mpstat -P ALL 1 > /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt & mpirun -np 4 --map-by ppr:1:socket:PE=8 --mca mtl mx --mca pml cm bin/$kernel.$size.4;
+    sleep 1
+    kill $!
+    cat /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/mpstatAWK_OLD.awk > /home/a82523/ESC/TP1/CORE_USAGE/MPI/$kernel.$size.csv
+    rm /home/a82523/ESC/TP1/CORE_USAGE/Temp/temp.txt
+  done
+done

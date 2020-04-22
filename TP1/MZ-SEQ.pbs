@@ -18,7 +18,7 @@ fi
 make clean
 rm -f config/make.def
 
-if [ "$#" -eq 2 && "$1" = "intel"];
+if [  "$INTEL" = "true" ];
 then
   cp config/make.icc.def config/make.def
   make suite
@@ -30,8 +30,9 @@ fi
 
 for size in {"W","C"}
 do
-  for kernel in {"bt-mz","lu-mz","sp-mz"}
+#  for kernel in {"bt-mz","lu-mz","sp-mz"}
+  for kernel in "bt-mz"
   do
-    ./bin/${kernel}.${size}.x > results/${kernel}.${size}.res
+    ./bin/$kernel.${size}.x > results/${kernel}.${size}.res
   done
 done

@@ -1,0 +1,12 @@
+#PBS -N SER
+#PBS -q mei
+#PBS -l nodes=1:ppn=1:r662,walltime=2:00:00
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-SER/bin/
+module load gcc/5.3.0
+module load gcc/7.2.0
+module load intel/2019
+
+./bt-mz.S.x > bt-mz.S.test
+./lu-mz.S.x > lu-mz.S.test
+./sp-mz.S.x > sp-mz.S.test

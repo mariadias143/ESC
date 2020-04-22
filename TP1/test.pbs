@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$INTEL" = "true" ];
+then
+  echo "intel"
+else
+  echo "ola"
+fi

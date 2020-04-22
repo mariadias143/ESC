@@ -1,0 +1,32 @@
+#PBS -N MPSTAT-MPI
+#PBS -q mei
+#PBS -l nodes=2:ppn=32:r641,walltime=2:00:00
+
+module load gcc/5.3.0
+module load gcc/7.2.0
+
+module load intel/2019
+module load intel/openmpi_mx/1.8.4
+
+cd /home/a82523/ESC/TP1/NPB3.3.1-MZ/NPB3.3-MZ-MPI/
+make clean
+make suite
+
+#####MPI#######
+
+export OMP_NUM_THREADS=24
+for kernel in {"bt-mz","lu-mz","sp-mz"}
+do
+  for size in {"A","B","C"}
+  do
+    (ssh -- sar -n DEV 1 > /home/a82523/ESC/TP1/NETWORK/Temp/temp2.txt) &
+    sar -n DEV 1 > /home/a82523/ESC/TP1/NETWORK/Temp/temp.txt & mpirun -np 4 --bind-to hwthread --map-by ppr:2:node:pe=24 -x OMP_NUM_THREADS --mca mtl mx --mca pml cm bin/$kernel.$size.4
+    sleep 1;
+    kill -9 %2;
+    kill -9 %1;
+    cat /home/a82523/ESC/TP1/NETWORK/Temp/temp.txt | gawk -f /home/a82523/ESC/TP1/newtwork_AWK_timeline.awk > /home/a82523/ESC/TP1/NETWORK/MPI_HT_1/$kernel.$size.csv
+    cat /home/a82523/ESC/TP1/NETWORK/Temp/temp2.txt | gawk -f /home/a82523/ESC/TP1/newtwork_AWK_timeline.awk >  /home/a82523/ESC/TP1/NETWORK/MPI_HT_2/$kernel.$size.csv
+    rm /home/a82523/ESC/TP1/NETWORK/Temp/temp.txt
+    rm /home/a82523/ESC/TP1/NETWORK/Temp/temp2.txt
+  done
+done
