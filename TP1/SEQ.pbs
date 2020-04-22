@@ -1,0 +1,43 @@
+#PBS -N SER
+#PBS -q mei
+#PBS -l nodes=1:ppn=1:r662,walltime=2:00:00
+
+cd /home/a81611/ESC/TP1/NPB3.3.1/NPB3.3-SER/
+module load gcc/5.3.0
+module load gcc/7.2.0
+module load intel/2019
+
+if [ ! -d results ];then
+  mkdir results;
+fi
+
+if [ ! -d bin ]; then
+  mkdir bin
+fi
+
+make clean
+rm -f config/make.def
+cp config/make.icc.def config/make.def
+make suite
+echo "intel"
+
+for size in {"A","B","C"}
+do
+  for kernel in {"cg","ep","is"}
+  do
+    ./bin/${kernel}.${size}.x > results/${kernel}.intel.ofast1.${size}.res
+  done
+done
+
+make clean
+rm -f config/make.def
+cp config/make.cc.def config/make.def
+make suite
+
+for size in {"A","B","C"}
+do
+  for kernel in {"cg","ep","is"}
+  do
+    ./bin/${kernel}.${size}.x > results/${kernel}.gnu.ofast1.${size}.res
+  done
+done
