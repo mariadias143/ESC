@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
 
   srand(1);
   int SIZE = argc > 1 ? atoi(argv[1]) : 4096;
-  int bcd = argc > 2 ? atoi(argv[4]) : 1;
+  int bcd = argc > 2 ? atoi(argv[2]) : 1;
 
   int ROWS = SIZE;
   int COLS = SIZE;
