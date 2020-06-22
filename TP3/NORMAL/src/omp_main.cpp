@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 
   CRS * server = new CRS(ROWS,COLS,0.2,balanced);
   double start = omp_get_wtime();
-  server->sequencial();
+  server->parallel();
   double end = omp_get_wtime();
   printf("time: %f seconds.\n", end-start);
   return 0;
