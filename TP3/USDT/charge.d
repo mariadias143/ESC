@@ -6,7 +6,6 @@ sparseget*:::query_userentry
 sparseget*:::query_charge
 /self->t != 0/
 {
-  printf("%d\n",args[1]);
   @fds[execname] = lquantize(args[1], 0 , 8192 , 1)
 }
 

@@ -42,6 +42,7 @@ END
 {
   printf("\n---------------TIME SPENT--------------\n");
   printa(@totaltime);
+  trunc(@mem,20);
   printf("\n---------------Memory Allocated--------------\n");
   printa("probemod = %s,\tprobefunc = %s\tsize = %d,\tcount = %@d \n",@mem);
 }
