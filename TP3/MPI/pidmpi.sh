@@ -1,0 +1,5 @@
+#!/bin/sh
+# partrace.sh - a helper script to dtrace Open MPI jobs from the
+#		start of the job.
+
+dtrace -Fs $1 mpi  -c /export/home/a82523/TP3/MPI/mpi -o $OMPI_COMM_WORLD_RANK.trace
