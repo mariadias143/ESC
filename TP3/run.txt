@@ -4,6 +4,6 @@ dtrace -Fs graph_syscall.d -c MPI/run2.sh -o OUTPUT
 
 ./MPI/run3.sh pid
 
-dtrace -Fs plockstat -c NOME_EXEC -o OUTPUT
+dtrace -Fs plockstat.d -c NOME_EXEC -o OUTPUT
 
-dtrace -Fs sched -c NOME_EXEC -o OUTPUT
+dtrace -Fs sched.d -c NOME_EXEC -o OUTPUT

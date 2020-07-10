@@ -5,20 +5,20 @@ plockstat$target:::mutex-block
 plockstat$target:::mutex-acquire
 /self->ts != 0/
 {
-  @wait[tid] = quantize(timestamp - self->ts);
+  @wait = quantize(timestamp - self->ts);
   self->ts = 0;
   self->acquired = timestamp;
 }
 plockstat$target:::mutex-release
 /self->ts == 0 && self->acquired != 0/
 {
-  @hold[tid] = quantize(timestamp - self->acquired);
+  @hold = quantize(timestamp - self->acquired);
   self->acquired = 0;
 }
 END
 {
-  printf("\n-----TIME WAITING FOR LOCK\n");
+  printf("\n-----TIME WAITING FOR LOCK-----------");
   printa(@wait);
-  printf("\n-----TIME WITH LOCK\n");
+  printf("\n-----TIME WITH LOCK------------");
   printa(@hold);
 }

@@ -5,9 +5,8 @@
 #include <omp.h>
 
 int main(int argc, char *argv[]) {
-
   srand(1);
-  int SIZE = argc > 1 ? atoi(argv[1]) : 4096;
+  int SIZE = argc > 1 ? atoi(argv[1]) : 2048;
   int bcd = argc > 2 ? atoi(argv[2]) : 1;
 
   int ROWS = SIZE;
@@ -16,8 +15,8 @@ int main(int argc, char *argv[]) {
 
   CRS * server = new CRS(ROWS,COLS,0.2,balanced);
   double start = omp_get_wtime();
-  server->parallel();
+  server->sequencial();
   double end = omp_get_wtime();
-  printf("time: %f seconds.\n", end-start);
+  printf("time: %f seconds. SIZE: %d\n", end-start,SIZE);
   return 0;
 }

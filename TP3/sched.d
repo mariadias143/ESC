@@ -8,14 +8,16 @@ sched:::on-cpu
   self->ts = timestamp;
 }
 sched:::off-cpu
-/self->ts && pid == $target/
+/self->ts/
 {
-  @oncpuT[cpu] = sum(timestamp - self->ts);
+  @oncpuT[tid,cpu] = sum(timestamp - self->ts);
   self->ts = 0;
 }
 END
 {
   totaltime = timestamp - start;
-  printf("\n CPU\tTime with work");
-  printa(@oncpuT);
+  printf("\n Total time: %d us",totaltime/1000);
+  printf("\n CPU\tTime with work in us\n");
+  normalize(@oncpuT, 1000);
+  printa("Thread = %d, CPU = %d\tTime = %@d\n",@oncpuT);
 }
